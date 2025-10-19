@@ -1,0 +1,348 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model client_branches {
+  branch_id       String            @id @default(dbgenerated("gen_random_uuid()")) @db.VarChar(36)
+  client_id       String            @db.VarChar(36)
+  branch_name     String            @db.VarChar(255)
+  address_line1   String?           @db.VarChar(255)
+  address_line2   String?           @db.VarChar(255)
+  commune_id      String?           @db.VarChar(36)
+  postal_code     String?           @db.VarChar(20)
+  phone_number    String?           @db.VarChar(50)
+  email           String?           @db.VarChar(255)
+  notes           String?
+  is_active       Boolean?          @default(true)
+  created_at      DateTime?         @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime?         @default(now()) @db.Timestamptz(6)
+  communes        communes?         @relation(fields: [commune_id], references: [commune_id], onDelete: NoAction, onUpdate: NoAction, map: "client_branches_communes_fk")
+  clients         clients           @relation(fields: [client_id], references: [client_id], onDelete: Cascade, map: "fk_client_branches_client_id")
+  client_contacts client_contacts[]
+  quotes          quotes[]
+  work_orders     work_orders[]
+}
+
+model client_contacts {
+  contact_id         String          @id @default(dbgenerated("gen_random_uuid()")) @db.VarChar(36)
+  branch_id          String          @db.VarChar(36)
+  first_name         String          @db.VarChar(100)
+  last_name          String          @db.VarChar(100)
+  email              String?         @db.VarChar(255)
+  phone_number       String?         @db.VarChar(50)
+  mobile_number      String?         @db.VarChar(50)
+  position           String?         @db.VarChar(100)
+  is_primary_contact Boolean?        @default(false)
+  notes              String?
+  is_active          Boolean?        @default(true)
+  created_at         DateTime?       @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime?       @default(now()) @db.Timestamptz(6)
+  client_branches    client_branches @relation(fields: [branch_id], references: [branch_id], onDelete: Cascade, map: "fk_client_contacts_branch_id")
+  quotes             quotes[]
+  work_orders        work_orders[]
+}
+
+model clients {
+  client_id            String            @id @default(dbgenerated("gen_random_uuid()")) @db.VarChar(36)
+  company_id           String            @db.VarChar(36)
+  client_name          String            @db.VarChar(255)
+  client_rut           String?           @db.VarChar(20)
+  client_type          String?           @db.VarChar(50)
+  billing_email        String?           @db.VarChar(255)
+  billing_phone_number String?           @db.VarChar(50)
+  address_line1        String?           @db.VarChar(255)
+  address_line2        String?           @db.VarChar(255)
+  commune_id           String?           @db.VarChar(36)
+  postal_code          String?           @db.VarChar(20)
+  notes                String?
+  is_active            Boolean?          @default(true)
+  created_at           DateTime?         @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime?         @default(now()) @db.Timestamptz(6)
+  client_branches      client_branches[]
+  communes             communes?         @relation(fields: [commune_id], references: [commune_id], onDelete: NoAction, onUpdate: NoAction, map: "clients_communes_fk")
+  companies            companies         @relation(fields: [company_id], references: [company_id], map: "fk_clients_company_id")
+  quotes               quotes[]
+  work_orders          work_orders[]
+}
+
+model communes {
+  commune_id      String            @id @default(dbgenerated("gen_random_uuid()")) @db.VarChar(36)
+  province_id     String            @db.VarChar(36)
+  commune_name    String            @db.VarChar(100)
+  commune_code    String?           @db.VarChar(10)
+  created_at      DateTime?         @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime?         @default(now()) @db.Timestamptz(6)
+  client_branches client_branches[]
+  clients         clients[]
+  provinces       provinces         @relation(fields: [province_id], references: [province_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_communes_province_id")
+  companies       companies[]
+}
+
+model companies {
+  company_id    String        @id @default(dbgenerated("gen_random_uuid()")) @db.VarChar(36)
+  company_name  String        @db.VarChar(255)
+  company_rut   String?       @db.VarChar(20)
+  address_line1 String?       @db.VarChar(255)
+  address_line2 String?       @db.VarChar(255)
+  commune_id    String?       @db.VarChar(36)
+  postal_code   String?       @db.VarChar(20)
+  phone_number  String?       @db.VarChar(50)
+  email         String?       @db.VarChar(255)
+  website       String?       @db.VarChar(255)
+  is_active     Boolean?      @default(true)
+  created_at    DateTime?     @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime?     @default(now()) @db.Timestamptz(6)
+  clients       clients[]
+  communes      communes?     @relation(fields: [commune_id], references: [commune_id], onDelete: NoAction, onUpdate: NoAction, map: "companies_communes_fk")
+  quotes        quotes[]
+  users         users[]
+  work_orders   work_orders[]
+}
+
+model countries {
+  country_id   String    @id @default(dbgenerated("gen_random_uuid()")) @db.VarChar(36)
+  country_name String    @db.VarChar(100)
+  created_at   DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime? @default(now()) @db.Timestamptz(6)
+  regions      regions[]
+}
+
+model currencies {
+  currency_id   String    @id @default(dbgenerated("gen_random_uuid()")) @db.VarChar(36)
+  currency_code String    @db.VarChar(5)
+  currency_name String    @db.VarChar(100)
+  symbol        String?   @db.VarChar(10)
+  is_default    Boolean?  @default(false)
+  is_active     Boolean?  @default(true)
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  quotes        quotes[]
+}
+
+model payment_statuses {
+  payment_status_id String        @id @default(dbgenerated("gen_random_uuid()")) @db.VarChar(36)
+  status_name       String        @db.VarChar(100)
+  description       String?       @db.VarChar(255)
+  display_order     Int
+  is_final          Boolean?      @default(false)
+  is_active         Boolean?      @default(true)
+  created_at        DateTime?     @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime?     @default(now()) @db.Timestamptz(6)
+  work_orders       work_orders[]
+}
+
+model products_and_services {
+  item_id            String             @id @default(dbgenerated("gen_random_uuid()")) @db.VarChar(36)
+  item_code          String?            @db.VarChar(50)
+  item_name          String             @db.VarChar(255)
+  item_description   String?
+  item_type          enum_type_1
+  unit_price         Decimal            @default(0.0000) @db.Decimal(18, 4)
+  is_active          Boolean?           @default(true)
+  created_at         DateTime?          @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime?          @default(now()) @db.Timestamptz(6)
+  unit_of_measure_id String?            @db.VarChar(36)
+  units_of_measure   units_of_measure?  @relation(fields: [unit_of_measure_id], references: [unit_of_measure_id], onDelete: Restrict, map: "fk_products_and_services_unit_of_measure_id")
+  quote_items        quote_items[]
+  work_order_items   work_order_items[]
+}
+
+model provinces {
+  province_id   String     @id @default(dbgenerated("gen_random_uuid()")) @db.VarChar(36)
+  region_id     String     @db.VarChar(36)
+  province_name String     @db.VarChar(100)
+  created_at    DateTime?  @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime?  @default(now()) @db.Timestamptz(6)
+  communes      communes[]
+  regions       regions    @relation(fields: [region_id], references: [region_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_provinces_region_id")
+}
+
+model quote_items {
+  quote_item_id         String                 @id @default(dbgenerated("gen_random_uuid()")) @db.VarChar(36)
+  quote_id              String                 @db.VarChar(36)
+  item_type             String?                @db.VarChar(50)
+  item_name             String?                @db.VarChar(255)
+  item_description      String?
+  item_id               String?                @db.VarChar(36)
+  quantity              Decimal                @default(1.0000) @db.Decimal(10, 4)
+  unit_price            Decimal                @default(0.0000) @db.Decimal(18, 4)
+  discount_per_item     Decimal                @default(0.0000) @db.Decimal(18, 4)
+  total_price           Decimal                @db.Decimal(18, 4)
+  item_order            Int?
+  created_at            DateTime?              @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime?              @default(now()) @db.Timestamptz(6)
+  products_and_services products_and_services? @relation(fields: [item_id], references: [item_id], onDelete: Restrict, map: "fk_quote_items_item_id")
+  quotes                quotes                 @relation(fields: [quote_id], references: [quote_id], onDelete: Cascade, map: "fk_quote_items_quote_id")
+}
+
+model quote_statuses {
+  status_id   String    @id @default(dbgenerated("gen_random_uuid()")) @db.VarChar(36)
+  status_name String    @db.VarChar(100)
+  description String?   @db.VarChar(255)
+  is_final    Boolean?  @default(false)
+  is_active   Boolean?  @default(true)
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime? @default(now()) @db.Timestamptz(6)
+  quotes      quotes[]
+}
+
+model quotes {
+  quote_id             String           @id @default(dbgenerated("gen_random_uuid()")) @db.VarChar(36)
+  company_id           String           @db.VarChar(36)
+  client_id            String           @db.VarChar(36)
+  branch_id            String?          @db.VarChar(36)
+  contact_id           String?          @db.VarChar(36)
+  user_id              String           @db.VarChar(36)
+  quote_number         String           @db.VarChar(50)
+  quote_date           DateTime         @default(dbgenerated("CURRENT_DATE")) @db.Date
+  expiration_date      DateTime?        @db.Date
+  status_id            String           @db.VarChar(36)
+  currency_id          String           @db.VarChar(36)
+  subtotal             Decimal          @default(0.0000) @db.Decimal(18, 4)
+  discount_amount      Decimal          @default(0.0000) @db.Decimal(18, 4)
+  tax_rate             Decimal          @default(0.1900) @db.Decimal(5, 4)
+  tax_amount           Decimal          @default(0.0000) @db.Decimal(18, 4)
+  total_amount         Decimal          @default(0.0000) @db.Decimal(18, 4)
+  notes                String?
+  customer_notes       String?
+  terms_and_conditions String?
+  created_at           DateTime?        @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime?        @default(now()) @db.Timestamptz(6)
+  quote_items          quote_items[]
+  client_branches      client_branches? @relation(fields: [branch_id], references: [branch_id], map: "fk_quotes_branch_id")
+  clients              clients          @relation(fields: [client_id], references: [client_id], map: "fk_quotes_client_id")
+  companies            companies        @relation(fields: [company_id], references: [company_id], map: "fk_quotes_company_id")
+  client_contacts      client_contacts? @relation(fields: [contact_id], references: [contact_id], map: "fk_quotes_contact_id")
+  currencies           currencies       @relation(fields: [currency_id], references: [currency_id], map: "fk_quotes_currency_id")
+  quote_statuses       quote_statuses   @relation(fields: [status_id], references: [status_id], map: "fk_quotes_status_id")
+  users                users            @relation(fields: [user_id], references: [user_id], map: "fk_quotes_user_id")
+  work_orders          work_orders[]
+}
+
+model regions {
+  region_id            String      @id @default(dbgenerated("gen_random_uuid()")) @db.VarChar(36)
+  country_id           String      @db.VarChar(36)
+  region_name          String      @db.VarChar(100)
+  region_roman_numeral String?     @db.VarChar(5)
+  region_code          String?     @db.VarChar(5)
+  created_at           DateTime?   @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime?   @default(now()) @db.Timestamptz(6)
+  provinces            provinces[]
+  countries            countries   @relation(fields: [country_id], references: [country_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_regions_country_id")
+}
+
+model units_of_measure {
+  unit_of_measure_id    String                  @id @default(dbgenerated("gen_random_uuid()")) @db.VarChar(36)
+  unit_name             String                  @db.VarChar(100)
+  symbol                String?                 @db.VarChar(10)
+  description           String?                 @db.VarChar(255)
+  is_active             Boolean?                @default(true)
+  created_at            DateTime?               @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime?               @default(now()) @db.Timestamptz(6)
+  products_and_services products_and_services[]
+}
+
+model user_sessions {
+  session_id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.VarChar(36)
+  user_id            String    @db.VarChar(36)
+  refresh_token      String    @db.VarChar(2048)
+  ip_address         String?   @db.VarChar(45)
+  user_agent         String?   @db.VarChar(500)
+  login_time         DateTime  @default(now()) @db.Timestamptz(6)
+  last_activity_time DateTime  @default(now()) @db.Timestamptz(6)
+  expiration_time    DateTime? @db.Timestamptz(6)
+  is_revoked         Boolean?  @default(false)
+  created_at         DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime? @default(now()) @db.Timestamptz(6)
+  users              users     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, map: "fk_user_sessions_user_id")
+}
+
+model users {
+  user_id       String          @id @default(dbgenerated("gen_random_uuid()")) @db.VarChar(36)
+  user_email    String          @db.VarChar(500)
+  user_password String          @db.VarChar(500)
+  user_name     String          @db.VarChar(500)
+  company_id    String?         @db.VarChar(36)
+  role          String          @db.VarChar(100)
+  created_at    DateTime        @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime?       @default(now()) @db.Timestamptz(6)
+  is_active     Boolean         @default(true)
+  quotes        quotes[]
+  user_sessions user_sessions[]
+  companies     companies?      @relation(fields: [company_id], references: [company_id], onDelete: NoAction, onUpdate: NoAction, map: "users_companies_fk")
+  work_orders   work_orders[]
+}
+
+model work_order_items {
+  work_order_item_id    String                 @id @default(dbgenerated("gen_random_uuid()")) @db.VarChar(36)
+  work_order_id         String                 @db.VarChar(36)
+  item_id               String?                @db.VarChar(36)
+  item_type             String?                @db.VarChar(50)
+  item_name             String?                @db.VarChar(255)
+  item_description      String?
+  quantity              Decimal                @default(1.0000) @db.Decimal(10, 4)
+  unit_price            Decimal                @default(0.0000) @db.Decimal(18, 4)
+  discount_per_item     Decimal                @default(0.0000) @db.Decimal(18, 4)
+  total_price           Decimal                @db.Decimal(18, 4)
+  item_order            Int?
+  notes                 String?
+  created_at            DateTime?              @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime?              @default(now()) @db.Timestamptz(6)
+  products_and_services products_and_services? @relation(fields: [item_id], references: [item_id], onDelete: Restrict, map: "fk_work_order_items_item_id")
+  work_orders           work_orders            @relation(fields: [work_order_id], references: [work_order_id], onDelete: Cascade, map: "fk_work_order_items_work_order_id")
+}
+
+model work_order_statuses {
+  work_order_status_id String        @id @default(dbgenerated("gen_random_uuid()")) @db.VarChar(36)
+  status_name          String        @db.VarChar(100)
+  description          String?       @db.VarChar(255)
+  display_order        Int
+  is_final             Boolean?      @default(false)
+  is_active            Boolean?      @default(true)
+  created_at           DateTime?     @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime?     @default(now()) @db.Timestamptz(6)
+  work_orders          work_orders[]
+}
+
+model work_orders {
+  work_order_id        String              @id @default(dbgenerated("gen_random_uuid()")) @db.VarChar(36)
+  company_id           String              @db.VarChar(36)
+  quote_id             String              @db.VarChar(36)
+  client_id            String              @db.VarChar(36)
+  branch_id            String?             @db.VarChar(36)
+  contact_id           String?             @db.VarChar(36)
+  user_id              String              @db.VarChar(36)
+  work_order_number    String              @db.VarChar(50)
+  issue_date           DateTime            @default(dbgenerated("CURRENT_DATE")) @db.Date
+  start_date           DateTime?           @db.Date
+  end_date             DateTime?           @db.Date
+  work_order_status_id String              @db.VarChar(36)
+  payment_status_id    String              @db.VarChar(36)
+  total_amount         Decimal             @default(0.0000) @db.Decimal(18, 4)
+  paid_amount          Decimal             @default(0.0000) @db.Decimal(18, 4)
+  remaining_amount     Decimal             @default(0.0000) @db.Decimal(18, 4)
+  notes                String?
+  customer_notes       String?
+  created_at           DateTime?           @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime?           @default(now()) @db.Timestamptz(6)
+  work_order_items     work_order_items[]
+  client_branches      client_branches?    @relation(fields: [branch_id], references: [branch_id], map: "fk_work_orders_branch_id")
+  clients              clients             @relation(fields: [client_id], references: [client_id], map: "fk_work_orders_client_id")
+  companies            companies           @relation(fields: [company_id], references: [company_id], map: "fk_work_orders_company_id")
+  client_contacts      client_contacts?    @relation(fields: [contact_id], references: [contact_id], map: "fk_work_orders_contact_id")
+  payment_statuses     payment_statuses    @relation(fields: [payment_status_id], references: [payment_status_id], map: "fk_work_orders_payment_status_id")
+  quotes               quotes              @relation(fields: [quote_id], references: [quote_id], map: "fk_work_orders_quote_id")
+  users                users               @relation(fields: [user_id], references: [user_id], map: "fk_work_orders_user_id")
+  work_order_statuses  work_order_statuses @relation(fields: [work_order_status_id], references: [work_order_status_id], map: "fk_work_orders_work_order_status_id")
+}
+
+enum enum_type_1 {
+  Product
+  Service
+}

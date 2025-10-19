@@ -1,8 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f9fafb;         /* Fondo principal claro */
+  --foreground: #1e293b;         /* Texto principal oscuro */
+  --sidebar-bg: #1e293b;         /* Fondo sidebar claro */
+  --sidebar-fg: #f9fafb;         /* Texto sidebar claro */
+  --primary: #465fff;            /* Azul principal */
+  --primary-hover: #3641f5;      /* Azul hover */
+  --card-bg: #ffffff;            /* Fondo de tarjetas */
+  --border: #e5e7eb;             /* Bordes suaves */
+  --success: #32d583;
+  --warning: #fdb022;
+  --error: #f04438;
 }
 
 @theme inline {
@@ -14,8 +23,17 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #18181b;        /* Fondo principal oscuro */
+    --foreground: #f9fafb;        /* Texto principal claro */
+    --sidebar-bg: #0f172a;        /* Fondo sidebar oscuro */
+    --sidebar-fg: #f9fafb;        /* Texto sidebar claro */
+    --primary: #465fff;           /* Azul principal (igual que claro) */
+    --primary-hover: #3641f5;     /* Azul hover */
+    --card-bg: #23272f;           /* Fondo de tarjetas oscuro */
+    --border: #23272f;            /* Bordes suaves oscuros */
+    --success: #32d583;
+    --warning: #fdb022;
+    --error: #f04438;
   }
 }
 
