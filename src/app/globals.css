@@ -1,44 +1,37 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f9fafb;         /* Fondo principal claro */
-  --foreground: #1e293b;         /* Texto principal oscuro */
-  --sidebar-bg: #1e293b;         /* Fondo sidebar claro */
-  --sidebar-fg: #f9fafb;         /* Texto sidebar claro */
-  --primary: #465fff;            /* Azul principal */
-  --primary-hover: #3641f5;      /* Azul hover */
-  --card-bg: #ffffff;            /* Fondo de tarjetas */
-  --border: #e5e7eb;             /* Bordes suaves */
-  --success: #32d583;
-  --warning: #fdb022;
-  --error: #f04438;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg-main: #f8fafc;
+  --color-bg-secondary: #ffffff;
+  --color-primary: #2563eb;
+  --color-primary-light: #60a5fa;
+  --color-secondary: #1e293b;
+  --color-secondary-light: #64748b;
+  --color-accent: #22c55e;
+  --color-warning: #f59e42;
+  --color-danger: #ef4444;
+  --color-text-main: #1e293b;
+  --color-text-secondary: #64748b;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #18181b;        /* Fondo principal oscuro */
-    --foreground: #f9fafb;        /* Texto principal claro */
-    --sidebar-bg: #0f172a;        /* Fondo sidebar oscuro */
-    --sidebar-fg: #f9fafb;        /* Texto sidebar claro */
-    --primary: #465fff;           /* Azul principal (igual que claro) */
-    --primary-hover: #3641f5;     /* Azul hover */
-    --card-bg: #23272f;           /* Fondo de tarjetas oscuro */
-    --border: #23272f;            /* Bordes suaves oscuros */
-    --success: #32d583;
-    --warning: #fdb022;
-    --error: #f04438;
+    --color-bg-main: #0f172a;
+    --color-bg-secondary: #1e293b;
+    --color-primary: #60a5fa;
+    --color-primary-light: #2563eb;
+    --color-secondary: #334155;
+    --color-secondary-light: #94a3b8;
+    --color-accent: #4ade80;
+    --color-warning: #fbbf24;
+    --color-danger: #f87171;
+    --color-text-main: #f8fafc;
+    --color-text-secondary: #94a3b8;
   }
 }
 
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  @apply font-sans;
 }
+
