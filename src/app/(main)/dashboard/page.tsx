@@ -17,8 +17,8 @@ interface StatCardProps {
 const StatCard: React.FC<StatCardProps> = ({ title, value, icon: Icon, colorClass }) => (
   <Card className="flex items-center justify-between transition-all duration-300 transform hover:scale-[1.02] p-5">
     <div>
-      <p className="text-sm font-medium text-[--color-text-secondary] uppercase">{title}</p>
-      <p className="text-3xl font-bold mt-1 text-[--color-text-main]">{value.toLocaleString()}</p>
+      <p className="text-sm font-medium text-(--color-text-secondary) uppercase">{title}</p>
+      <p className="text-3xl font-bold mt-1 text-(--color-text-main)">{value.toLocaleString()}</p>
     </div>
     <div className={`p-3 rounded-full ${colorClass} text-white shadow-md`}>
       <Icon className="w-6 h-6" />
@@ -54,7 +54,7 @@ export default async function DashboardPage() {
       title: 'Clientes Totales',
       value: totalClients,
       icon: Users,
-      colorClass: 'bg-[--color-primary]', // Azul
+      colorClass: 'bg-(--color-primary)', // Azul
     },
     {
       title: 'Cotizaciones Pendientes',
@@ -66,7 +66,7 @@ export default async function DashboardPage() {
       title: 'Órdenes de Trabajo',
       value: totalWorkOrders,
       icon: ClipboardList,
-      colorClass: 'bg-[--color-accent]', // Verde
+      colorClass: 'bg-(--color-accent)', // Verde
     },
     {
         title: 'Productos Registrados',
@@ -78,7 +78,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-bold text-[--color-text-main]">Resumen Principal</h1>
+      <h1 className="text-3xl font-bold text-(--color-text-main)">Resumen Principal</h1>
       
       {/* Grid de Estadísticas */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -89,26 +89,26 @@ export default async function DashboardPage() {
 
       {/* TABLA: Órdenes de Trabajo Recientes */}
       <section className="mt-8 space-y-4">
-        <h2 className="text-2xl font-semibold text-[--color-text-main] border-b pb-2 border-gray-200 dark:border-gray-700">Órdenes de Trabajo Recientes</h2>
+        <h2 className="text-2xl font-semibold text-(--color-text-main) border-b pb-2 border-gray-200 dark:border-gray-700">Órdenes de Trabajo Recientes</h2>
         
         <Card className="overflow-x-auto">
           {recentWorkOrders.length > 0 ? (
             <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-              <thead className="bg-[--color-bg-main]">
+              <thead className="bg-(--color-bg-main)">
                 <tr>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-[--color-text-secondary] uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-(--color-text-secondary) uppercase tracking-wider">
                     ID
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-[--color-text-secondary] uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-(--color-text-secondary) uppercase tracking-wider">
                     Cliente
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-[--color-text-secondary] uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-(--color-text-secondary) uppercase tracking-wider">
                     Fecha Creación
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-[--color-text-secondary] uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-(--color-text-secondary) uppercase tracking-wider">
                     Total
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-[--color-text-secondary] uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-(--color-text-secondary) uppercase tracking-wider">
                     Estado
                   </th>
                 </tr>
@@ -122,17 +122,17 @@ export default async function DashboardPage() {
                   
                   return (
                     <tr key={order.id} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-150">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[--color-primary]">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-(--color-primary)">
                         #{order.id.substring(0, 8)}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-[--color-text-main]">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-(--color-text-main)">
                         {/* CORRECCIÓN: Usar client_name para coincidir con el select */}
                         {order.clients.client_name} 
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-[--color-text-main]">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-(--color-text-main)">
                         {date}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-[--color-text-main]">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-(--color-text-main)">
                         ${total}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -147,8 +147,8 @@ export default async function DashboardPage() {
             </table>
           ) : (
             <div className="text-center py-10">
-              <p className="text-[--color-text-secondary]">No se encontraron órdenes de trabajo recientes.</p>
-              <p className="text-sm mt-2 text-[--color-text-secondary]">Crea tu primera orden para verla aquí.</p>
+              <p className="text-(--color-text-secondary)">No se encontraron órdenes de trabajo recientes.</p>
+              <p className="text-sm mt-2 text-(--color-text-secondary)">Crea tu primera orden para verla aquí.</p>
             </div>
           )}
         </Card>

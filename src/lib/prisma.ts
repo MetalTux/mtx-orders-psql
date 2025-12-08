@@ -1,4 +1,5 @@
-import { PrismaClient } from '../generated/prisma';
+//import { PrismaClient } from '../generated/prisma';
+import { PrismaClient } from "@prisma/client";
 
 // Extender el objeto global para Next.js HMR (Hot Module Replacement)
 // Esto evita crear múltiples instancias de PrismaClient en desarrollo.

@@ -14,7 +14,7 @@ export default function Card({ children, className = '' }: CardProps) {
   return (
     <div
       className={`p-6 rounded-xl shadow-lg transition-colors duration-200 
-        bg-[--color-bg-secondary] text-[--color-text-main] 
+        bg-(--color-bg-secondary) text-(--color-text-main) 
         border border-gray-100 dark:border-gray-800 ${className}`}
     >
       {children}
