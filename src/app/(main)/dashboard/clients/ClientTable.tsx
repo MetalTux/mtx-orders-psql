@@ -3,11 +3,12 @@
 
 import React from 'react';
 import { Client } from '@/types/clientTypes';
-import { Edit, Trash2 } from 'lucide-react';
+import { Edit, Trash2, Building2 } from 'lucide-react';
 
 interface ClientTableProps {
   clients: Client[];
   onEdit: (client: Client) => void;
+  onBranches: (client: Client) => void;
   onDelete: (clientId: string, clientName: string) => void;
 }
 
@@ -15,7 +16,7 @@ interface ClientTableProps {
  * Componente de presentación para la lista de clientes.
  * Muestra los datos principales y los botones de acción.
  */
-export default function ClientTable({ clients, onEdit, onDelete }: ClientTableProps) {
+export default function ClientTable({ clients, onEdit, onBranches, onDelete }: ClientTableProps) {
   if (clients.length === 0) {
     return (
       <div className="text-center p-10 text-(--color-text-secondary)">
@@ -68,6 +69,13 @@ export default function ClientTable({ clients, onEdit, onDelete }: ClientTablePr
                   className="text-(--color-primary) hover:text-(--color-primary-light) p-1 rounded-full transition-colors"
                 >
                   <Edit className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={() => onEdit(client)}
+                  title="Sucursales Cliente"
+                  className="text-(--color-accent) hover:text-green-400 p-1 rounded-full transition-colors"
+                >
+                  <Building2 className="w-5 h-5" />
                 </button>
                 <button
                   onClick={() => onDelete(client.client_id, client.client_name)}

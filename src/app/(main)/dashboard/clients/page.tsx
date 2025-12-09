@@ -84,6 +84,10 @@ export default function ClientsPage() {
     }
   };
 
+  const handleSaveBranches = async () => {
+
+  };
+
 
   // --- MANEJO DE MODAL ---
 
@@ -93,6 +97,11 @@ export default function ClientsPage() {
   };
 
   const handleOpenEditForm = (client: Client) => {
+    setClientToEdit(client); // Cargar datos para modo 'Editar'
+    setIsFormOpen(true);
+  };
+
+  const handleOpenBrancheList = (client: Client) => {
     setClientToEdit(client); // Cargar datos para modo 'Editar'
     setIsFormOpen(true);
   };
@@ -138,6 +147,7 @@ export default function ClientsPage() {
         <ClientTable 
           clients={clients} 
           onEdit={handleOpenEditForm} 
+          onBranches={handleOpenBrancheList}
           onDelete={handleDelete}
         />
       </Card>
